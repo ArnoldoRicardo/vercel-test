@@ -1,16 +1,15 @@
-import App from '../../../src/components/app'
-// import { getAllTodos } from '../../../utils/todoService'
+import App from 'src/app'
+import { getTodos } from 'utils/todoGraphqlClient'
 
 type Args = {
   params: { book_id: string }
 }
 
 export default async function Page({ params }: Args) {
-  // const todos = await getAllTodos(params.book_id)
-  const todos = [] as Todo[]
+  const todos = await getTodos()
   return (
     <>
-      <App RawTodos={todos} />
+      <App rawTodos={todos} />
     </>
   )
 }

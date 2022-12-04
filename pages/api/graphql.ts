@@ -5,13 +5,14 @@ import gql from 'graphql-tag'
 import { GraphQLError } from 'graphql'
 import { v4 } from 'uuid'
 
-import { findUser, newUser } from '../../utils/userService'
+import { findUser, newUser } from 'utils/userService'
 import {
   addTodo,
   updateTodo,
   deleteTodos,
-  completeTodos
-} from '../../utils/todoService'
+  completeTodos,
+  getAllTodos
+} from 'utils/todoService'
 
 const typeDefs = gql`
   type Todo {
@@ -32,14 +33,15 @@ const typeDefs = gql`
 
   type Query {
     me: User
+    getAllTodo: [Todo]
   }
   type Mutation {
     login(username: String!, password: String!): Token
     createUser(username: String!, password: String!): User
     createTodo(text: String!): Todo
     updateTodo(id: String!, text: String, completed: Boolean, sort: Int): Todo
-    deleteTodos(ids: String!): String
-    completedTodos(ids: String!): String
+    deleteTodos(ids: [String]!): String
+    completedTodos(ids: [String]!): String
   }
 `
 
@@ -48,6 +50,9 @@ const resolvers = {
     me: async (root: undefined, args: undefined, { currentUser }: Context) => {
       if (!currentUser) throw new GraphQLError('query dont allowed')
       return currentUser
+    },
+    getAllTodo: async () => {
+      return await getAllTodos('0')
     }
   },
   Mutation: {
@@ -76,13 +81,11 @@ const resolvers = {
     updateTodo: async (root: undefined, update: TodoUpdate) => {
       return await updateTodo(update)
     },
-    deleteTodos: async (root: undefined, { ids }: { ids: string }) => {
-      const filter_ids = ids.split(',')
-      return await deleteTodos(filter_ids)
+    deleteTodos: async (root: undefined, { ids }: { ids: string[] }) => {
+      return await deleteTodos(ids)
     },
-    completedTodos: async (root: undefined, { ids }: { ids: string }) => {
-      const filter_ids = ids.split(',')
-      return await completeTodos(filter_ids)
+    completedTodos: async (root: undefined, { ids }: { ids: string[] }) => {
+      return await completeTodos(ids)
     }
   }
 }

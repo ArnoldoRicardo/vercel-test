@@ -1,5 +1,5 @@
-import App from '../../src/components/app'
-import { getAllTodos } from '../../utils/todoService'
+import App from 'src/app'
+import { getAllTodos } from 'utils/todoService'
 
 type PageProps = {
   todos?: Todo[]
@@ -8,7 +8,7 @@ type PageProps = {
 export default function Books({ todos }: PageProps) {
   return (
     <section className="todoapp">
-      <App RawTodos={todos} />
+      <App rawTodos={todos} />
     </section>
   )
 }

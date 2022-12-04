@@ -78,7 +78,6 @@ export const deleteTodos = async (ids: string[]): Promise<void> => {
     DELETE FROM public.todo
 	WHERE id in (${values});
     `
-  console.log(sql_select)
   const client = await pool.connect()
   try {
     const res = await client.query(sql_select)
@@ -90,7 +89,7 @@ export const deleteTodos = async (ids: string[]): Promise<void> => {
 }
 
 export const completeTodos = async (ids: string[]): Promise<void> => {
-  const values = String(Object.values(ids).map((id) => "'" + id + "'"))
+  const values = String(ids.map((id) => "'" + id + "'"))
   const sql_select = `
     --sql
     UPDATE public.todo
