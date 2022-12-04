@@ -1,12 +1,5 @@
-import { Pool } from 'pg'
+import { pool } from './db'
 import { GraphQLError } from 'graphql'
-
-export const pool = new Pool()
-
-pool.on('error', (err, client) => {
-  console.error('Unexpected error on idle client', err)
-  process.exit(-1)
-})
 
 export const findUser = async (username: string): Promise<userInDb> => {
   const sql_select = `
@@ -24,6 +17,26 @@ export const findUser = async (username: string): Promise<userInDb> => {
   try {
     const res = await client.query(sql_select)
     return res.rows[0]
+  } catch (err: any) {
+    throw new GraphQLError(err.message)
+  } finally {
+    client.release()
+  }
+}
+
+export const getAllUser = async (): Promise<userInDb[]> => {
+  const sql_select = `
+    --sql
+    select 
+        id
+        , username
+        , hasshed_password
+    from public."User" 
+    `
+  const client = await pool.connect()
+  try {
+    const res = await client.query(sql_select)
+    return res.rows
   } catch (err: any) {
     throw new GraphQLError(err.message)
   } finally {

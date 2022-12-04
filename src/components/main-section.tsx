@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Todo, TodoUpdate } from '../src/todo'
 import Footer from './footer'
 import TodoList from './todo-list'
 

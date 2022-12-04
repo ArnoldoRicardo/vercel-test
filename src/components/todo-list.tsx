@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { Todo, TodoUpdate } from '../src/todo'
 import { TodoItem } from './todo-item'
 
 const TodoList = ({

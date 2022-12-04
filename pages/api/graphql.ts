@@ -3,10 +3,24 @@ import bcrypt from 'bcrypt'
 import { createYoga, createSchema } from 'graphql-yoga'
 import gql from 'graphql-tag'
 import { GraphQLError } from 'graphql'
+import { v4 } from 'uuid'
 
 import { findUser, newUser } from '../../utils/userService'
+import {
+  addTodo,
+  updateTodo,
+  deleteTodos,
+  completeTodos
+} from '../../utils/todoService'
 
-const typeDefs = /* GraphQL */ gql`
+const typeDefs = gql`
+  type Todo {
+    id: String
+    text: String
+    completed: Boolean
+    sort: Int
+  }
+
   type User {
     id: ID!
     username: String!
@@ -22,6 +36,10 @@ const typeDefs = /* GraphQL */ gql`
   type Mutation {
     login(username: String!, password: String!): Token
     createUser(username: String!, password: String!): User
+    createTodo(text: String!): Todo
+    updateTodo(id: String!, text: String, completed: Boolean, sort: Int): Todo
+    deleteTodos(ids: String!): String
+    completedTodos(ids: String!): String
   }
 `
 
@@ -50,6 +68,21 @@ const resolvers = {
     createUser: async (root: undefined, { username, password }: userArgs) => {
       const hasshed_password = await bcrypt.hash(password, 10)
       return await newUser(username, hasshed_password)
+    },
+    createTodo: async (root: undefined, { text }: { text: string }) => {
+      const id = v4()
+      return await addTodo(text, id)
+    },
+    updateTodo: async (root: undefined, update: TodoUpdate) => {
+      return await updateTodo(update)
+    },
+    deleteTodos: async (root: undefined, { ids }: { ids: string }) => {
+      const filter_ids = ids.split(',')
+      return await deleteTodos(filter_ids)
+    },
+    completedTodos: async (root: undefined, { ids }: { ids: string }) => {
+      const filter_ids = ids.split(',')
+      return await completeTodos(filter_ids)
     }
   }
 }
