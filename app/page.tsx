@@ -10,10 +10,16 @@ export default async function Page() {
       <ul>
         {/* {users && users.map((user) => <li key={user.id}>{user.username}</li>)} */}
       </ul>
-      experimental
-      <Link href="/book/0">primer book</Link>
-      legacy
-      <Link href="/todo/0">primer book</Link>
+      <ul>
+        <li>
+          experimental
+          <Link href="/book/0">primer book</Link>
+        </li>
+        <li>
+          legacy
+          <Link href="/todos/0">primer book</Link>
+        </li>
+      </ul>
     </>
   )
 }
