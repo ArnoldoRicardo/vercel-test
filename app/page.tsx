@@ -1,12 +1,13 @@
-import { getAllUser } from '../utils/userService'
+// TODO: find how to install pg-native in vercel
+// import { getAllUser } from '../utils/userService'
 
 export default async function Page() {
-  const users = await getAllUser()
+  // const users = await getAllUser()
   return (
     <>
       users:
       <ul>
-        {users && users.map((user) => <li key={user.id}>{user.username}</li>)}
+        {/* {users && users.map((user) => <li key={user.id}>{user.username}</li>)} */}
       </ul>
     </>
   )

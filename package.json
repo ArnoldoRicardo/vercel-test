@@ -28,7 +28,6 @@
     "jsonwebtoken": "^8.5.1",
     "next": "13.0.6",
     "pg": "^8.8.0",
-    "pg-native": "^3.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "todomvc-app-css": "^2.4.2",
