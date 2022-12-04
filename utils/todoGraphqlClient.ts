@@ -1,6 +1,8 @@
 import { GraphQLClient, gql } from 'graphql-request'
 
-const client = new GraphQLClient('http://localhost:3000/api/graphql')
+const client = new GraphQLClient(
+  process.env.VERCEL_URL || 'http://localhost:3000/api/graphql'
+)
 
 const GET_ALL_TODO_QUERY = gql`
   query getAllTodo {
