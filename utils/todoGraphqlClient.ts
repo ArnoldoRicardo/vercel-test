@@ -1,9 +1,6 @@
 import { GraphQLClient, gql } from 'graphql-request'
 
-const client = new GraphQLClient(
-  process.env.VERCEL_URL ||
-    'http://https://vercel-test-iei4m3qni-arnoldoricardo.vercel.app/api/graphql'
-)
+const client = new GraphQLClient(process.env.VERCEL_URL || '/api/graphql')
 
 const GET_ALL_TODO_QUERY = gql`
   query getAllTodo {
@@ -17,6 +14,7 @@ const GET_ALL_TODO_QUERY = gql`
 `
 
 export const getTodos = async () => {
+  console.log(process.env.VERCEL_URL)
   const response = await client.request(GET_ALL_TODO_QUERY)
   if (response.getAllTodo) {
     return response.getAllTodo
